@@ -194,83 +194,83 @@ public class BoardDAO {
 		}
 	}
 	
-	public String getPageNavi(int currentPage) throws Exception {
-	//페이지네이션
-		
-		
-		//1. 전체 레코드 수가 몇개인지?
-		int recordTotalCount = getRecordTotalCount();
-		
-		//2. 한페이지 안에 몇개의 게시글을 보여줄지?
-		int recordCountPerPage = Config.RECORD_COUNT_PER_PAGE;
-		
-		//3. 한번에 네비게이터를 몇개씩 보여줄 것인지?
-		
-		int naviCountPerPage = Config.NAVI_COUNT_PER_PAGE;
-		
-		//4. 전체 몇 페이지가 생성될 것인지?
-		
-		int pageTotalCount = 0 ;
-		if(recordTotalCount%recordCountPerPage > 0) {
-			pageTotalCount  = recordTotalCount/recordCountPerPage + 1;
-		}else {
-			pageTotalCount  = recordTotalCount/recordCountPerPage;
-		}
-		
-		//5. 내가 현재 있는 페이지 설정
-		
-		
-		if(currentPage <1) {
-			currentPage = 1;
-		}else if(currentPage > pageTotalCount) {
-			currentPage  =pageTotalCount;
-		}
-		
-		
-		//내비게이터의 시작값과 끝값
-		
-		int startNavi = ((currentPage - 1)/ naviCountPerPage) * naviCountPerPage  +1;
-		int endNavi = startNavi + naviCountPerPage-1;
-		
-		if(endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-	
-		
-		boolean needPrev = true;
-		boolean needNext = true;
-		
-		if(startNavi == 1) {
-		 needPrev = false;
-		}
-		
-		if(endNavi == pageTotalCount){
-			needNext=false;
-		}
-		
-		StringBuilder sb  = new StringBuilder();
-		
-		sb.append("<nav aria-label='Page navigation'><ul class='pagination justify-content-center'>");
-		
-		//ui
-		if(needPrev) {
-			sb.append("<li class='page-item'><a class = 'page-link' href='list.board?cpage="+(startNavi-1) +"'> Previous </a></li>");
-		}
-		for(int i=startNavi;i<=endNavi;i++) {
-			if(i == currentPage) {
-				sb.append("<li class='page-item active'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
-			}else {
-				sb.append("<li class='page-item'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
-			}
-		
-		}
-		if(needNext) {
-			sb.append("<li class='page-item'><a class='page-link' href='list.board?cpage="+(endNavi +1) +"'> Next </a></li>");
-		}
-		
-		sb.append("</ul></nav>");
-		return sb.toString();
-	}
+//	public String getPageNavi(int currentPage) throws Exception {
+//	//페이지네이션
+//		
+//		
+//		//1. 전체 레코드 수가 몇개인지?
+//		int recordTotalCount = getRecordTotalCount();
+//		
+//		//2. 한페이지 안에 몇개의 게시글을 보여줄지?
+//		int recordCountPerPage = Config.RECORD_COUNT_PER_PAGE;
+//		
+//		//3. 한번에 네비게이터를 몇개씩 보여줄 것인지?
+//		
+//		int naviCountPerPage = Config.NAVI_COUNT_PER_PAGE;
+//		
+//		//4. 전체 몇 페이지가 생성될 것인지?
+//		
+//		int pageTotalCount = 0 ;
+//		if(recordTotalCount%recordCountPerPage > 0) {
+//			pageTotalCount  = recordTotalCount/recordCountPerPage + 1;
+//		}else {
+//			pageTotalCount  = recordTotalCount/recordCountPerPage;
+//		}
+//		
+//		//5. 내가 현재 있는 페이지 설정
+//		
+//		
+//		if(currentPage <1) {
+//			currentPage = 1;
+//		}else if(currentPage > pageTotalCount) {
+//			currentPage  =pageTotalCount;
+//		}
+//		
+//		
+//		//내비게이터의 시작값과 끝값
+//		
+//		int startNavi = ((currentPage - 1)/ naviCountPerPage) * naviCountPerPage  +1;
+//		int endNavi = startNavi + naviCountPerPage-1;
+//		
+//		if(endNavi > pageTotalCount) {
+//			endNavi = pageTotalCount;
+//		}
+//	
+//		
+//		boolean needPrev = true;
+//		boolean needNext = true;
+//		
+//		if(startNavi == 1) {
+//		 needPrev = false;
+//		}
+//		
+//		if(endNavi == pageTotalCount){
+//			needNext=false;
+//		}
+//		
+//		StringBuilder sb  = new StringBuilder();
+//		
+//		sb.append("<nav aria-label='Page navigation'><ul class='pagination justify-content-center'>");
+//		
+//		//ui
+//		if(needPrev) {
+//			sb.append("<li class='page-item'><a class = 'page-link' href='list.board?cpage="+(startNavi-1) +"'> Previous </a></li>");
+//		}
+//		for(int i=startNavi;i<=endNavi;i++) {
+//			if(i == currentPage) {
+//				sb.append("<li class='page-item active'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
+//			}else {
+//				sb.append("<li class='page-item'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
+//			}
+//		
+//		}
+//		if(needNext) {
+//			sb.append("<li class='page-item'><a class='page-link' href='list.board?cpage="+(endNavi +1) +"'> Next </a></li>");
+//		}
+//		
+//		sb.append("</ul></nav>");
+//		return sb.toString();
+//	}
 	
 	
 	public List<BoardDTO> getAllBoard() throws Exception{

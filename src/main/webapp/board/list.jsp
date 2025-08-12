@@ -148,9 +148,7 @@
 			if(endNavi == pageTotalCount){
 				needNext=false;
 			}
-			
-			
-			
+
 			if(needPrev){
 				
 				$(".pagination")

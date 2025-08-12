@@ -6,14 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-	crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+    <!-- include summernote css/js-->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
 	.card-body{
@@ -36,37 +35,56 @@
 			
 			<div class="card m-auto">
 			<form id="boardDetailForm" action="/handle" method="post">
+		<textarea name="content" id="hiddenContent" style="display:none;"></textarea>
+			<input type="hidden"  name="seq" value="${board.seq}" />
+			<input id="hiddenTitle" type="hidden" name="title" value="${board.title}">
+			</form>
 				<div class="card-header">
-				<h4>
-					<div id="boardTitle">
+				<h4 id="boardTitle">
 					${board.title}
-					</div>
+					
 				</h4>
-				<input id="hiddenTitle" type="hidden" name="title" value="${board.title}">
+				
 				 <h6 class="card-subtitle mb-2 text-body-secondary">
 				 아이디: ${board.writer} | 작성일: ${board.write_date } | 조회수: ${board.view_count }</h6>
 				</div>
 				<div class="card-body" id="boardContent">
-					${board.contents}
+					<c:out value="${board.contents}" escapeXml="false" />
 				</div>
-				<input id="hiddenContents" type="hidden" name="content" value="${board.contents}">
+				
 				<div class="d-flex justify-content-end p-4">
 			
 				<c:if test="${loginId == board.writer}">
 					<button id="cancleBtn"  type="button" class="btn btn-outline-secondary d-none">취소</button>
 					<button id="updateBtn" type="button" class="btn btn-outline-secondary">수정하기</button>
-					
-					
-					<input type="hidden"  name="seq" value="${board.seq}" />
-					
+
 					<button id="deleteBtn"  type="button" class="btn btn-outline-danger">삭제하기</button>
 					
 				</c:if>
 					<a href="/list.board?cpage=1" id ="toBoardBtn"><button type="button" class="btn btn-outline-primary">목록으로</button></a>
 				</div>
-				</form>
+				
 			</div>
+	
+			<div class="container-fluid">
+			<form action="/comment.board" method="post">
+			    <div class="row g-2" style="height: 100px;">
 			
+			      <div class="col-10 d-grid">
+			        <div class="form-control h-100 align-middle" contenteditable="true" 
+			              
+			             id="commentBox" data-placeholder="댓글을 입력하세요..."></div>
+			      </div>
+			
+		
+			      <div class="col-2 d-grid">
+			        <input type="hidden" name="comment" id="hiddenComment">
+			        <button type="submit" class="btn btn-primary h-100">등록</button>
+			      </div>
+			    </div>
+			  </form>
+
+				</div>
 		</c:otherwise>
 </c:choose>
 <script>
@@ -92,14 +110,20 @@ $("#updateBtn").on("click", function(){
 			$("#cancleBtn").removeClass("d-none");
 			$("#toBoardBtn").addClass("d-none");
 			$("#boardTitle").attr("contenteditable","true");
-			$("#boardContent").attr("contenteditable","true");
-			$("#boardContent").addClass("border")
+			$("#boardContent").addClass("summernote")
+			
+			$('.summernote').summernote({
+				  height: 300, // set editor height
+				  minHeight: null, // set minimum height of editor
+				  maxHeight: null, // set maximum height of editor
+				  focus: true // set focus to editable area after initializing summernote
+				});
 		}else{
 			//수정중일 경우
 			updateBoard = false;
 			
 			$("#hiddenTitle").val($("#boardTitle").text())
-			$("#hiddenContents").val($("#boardContent").text())
+			$('#hiddenContent').val($('.summernote').summernote('code'));
 			$("#boardDetailForm").attr("action","/update.board");
 			 $("#boardDetailForm").submit();
 			 
@@ -110,7 +134,7 @@ $("#updateBtn").on("click", function(){
 $("#cancleBtn").click(()=>{
 	location.reload();
 })
-	
+
 </script>
 
 </body>

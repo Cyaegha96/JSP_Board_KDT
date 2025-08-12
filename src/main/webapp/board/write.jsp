@@ -6,18 +6,18 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-	crossorigin="anonymous"></script>
+     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+    <!-- include summernote css/js-->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
 <title>글 작성 페이지</title>
 </head>
 <body>
 	<c:choose>
+	
 		<c:when test="${loginId==null}">
 			<h2>로그인 하지 않은 사용자는 게시판을 이용할 수 없습니다.</h2>
 			<a href="/">뒤로가기</a>
@@ -43,28 +43,23 @@
 				</tr>
 					<tr > 
 				
-				<td colspan="5" height= "500px"> 
+				<td colspan="5"> 
 				
 				
-				<div id="editor"
-		           class="h-100 w-100 border p-2 text-start"
-		           contenteditable="true"
-		           style="overflow-y: auto;">
-		        글 내용을 입력하세요
-						
+				<div id="summernote" ></div>
 				
-				</div>
-				    <input type="hidden" name="content" id="hiddenContent">
 				
 				</td></tr>
 				
 				<tr>
 					<td colspan="5" class="text-end"> 
+					
+						 <input type="hidden" name="content" id="hiddenContent">
 							<a href="/list.board?cpage=1"><button type="button">목록으로</button></a>
 							<a ><button type="submit" id="submitbtn">작성완료</button></a>
+							
 					</td>
 				</tr>
-				
 				
 				</tbody>
 				
@@ -74,25 +69,29 @@
 	</c:choose>
 	<script type="text/javascript">
 	
-	const editableDiv = document.querySelector('[contenteditable]');
-	editableDiv.addEventListener('focus', function() {
-	  if (this.innerText === '글 내용을 입력하세요') {
-	    this.innerText = '';
-	  }
-	});
-	editableDiv.addEventListener('blur', function() {
-	  if (this.innerText.trim() === '') {
-	    this.innerText = '글 내용을 입력하세요';
-	  }
-	});
 
-	
 	 $("#writeBoardFrm").on("submit", function() {
-		    const editor = document.getElementById('editor');
+		  
 		    const hiddenInput = document.getElementById('hiddenContent');
-		    hiddenInput.value = editor.innerHTML; // 또는 innerText
+		    hiddenInput.value =  $('#summernote').summernote('code');
 		  })
-
-	</script>
+		  
+	$(document).ready(function() {
+	 $('#summernote').summernote({
+		 fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+			height: 450,
+			lang: "ko-KR",
+			placeholder : "내용을 작성하세요.",
+	        callbacks: {
+	            onInit: function() {
+	              // 에디터 내부 editable 영역에 스타일 직접 지정
+	              $('.note-editable').css('text-align', 'left');
+	            }
+	        }
+	      });
+		
+});
+	 </script>
 </body>
 </html>
