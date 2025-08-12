@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+	
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
 <title>로그인</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <style>
 * {
@@ -18,7 +23,9 @@
 </style>
 </head>
 <body>
-	<div
+	<c:choose>
+		<c:when test="${loginId==null}">
+			<div
 		class="Login_conatiner card m-auto p-3 rounded-2 border-primary d-flex justify-content-center "
 		style="width: 80%;">
 
@@ -69,7 +76,42 @@
 						for="rememberID"> ID 기억하기 </label>
 				</div>
 	</div>
+		
+		</c:when>
+		<c:otherwise>
+		<table border="1" class="table text-center">
+			<tr>
+				<th colspan="4">${loginId} 님 안녕하세요.</th>
+			</tr>
+			<tr>
+				
+				<td><a href="/list.board" class="text-decoration-none text-black fw-bold">회원게시판</td>
+				<td>
+					<a href="/mypage.member" class="text-decoration-none text-black fw-bold">마이페이지</a>
+				
+				</td>
+				
+				<td>
+					<a href="/logout.member" class="text-decoration-none text-black fw-bold">로그아웃</a>
+				</td>
+				<td><button type="button" id="deleteCheck" class="bg-transparent border-0 p-0 text-decoration-none text-black fw-bold" >회원 탈퇴</button></td>
+			</tr>
+		</table>	
+		<form id="withdrawForm" action="/delete.member" method="post">
+		  <input type="hidden" name="userId" value="${loginId}"> <!-- 필요 시 사용자 정보 -->
+		</form>
+		
+		</c:otherwise>	
+	</c:choose>
+
+	
 	<script>
+	
+	function sendDeleteOk(){
+	
+			$("#withdrawForm").submit();
+		
+	}
 	
 	(() => {
 		  'use strict'
@@ -89,6 +131,16 @@
 		    }, false)
 		  })
 		})()
+		
+		$("#deleteCheck").click(function(){
+
+			console.log("회원탈퇴 버튼 클릭");
+			
+		
+		
+    			window.open("/deleteCheck.member", "", "width=350, height=200");
+   		 });
+		
 	</script>
 	
 </body>

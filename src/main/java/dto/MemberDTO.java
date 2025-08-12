@@ -87,7 +87,19 @@ public class MemberDTO {
 		this.addressDetail = addressDetail;
 		this.createdAt = Timestamp.valueOf(LocalDateTime.now());
 	}
-	
+	public MemberDTO(String id, String pw, String name, String phoneNumber, String email, String zonecode,
+			String address, String addressDetail,Timestamp createdAt) {
+		super();
+		this.id = id;
+		this.pw = pw;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.zonecode = zonecode;
+		this.address = address;
+		this.addressDetail = addressDetail;
+		this.createdAt = createdAt;
+	}
 	
 	
 	

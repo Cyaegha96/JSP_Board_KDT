@@ -16,12 +16,17 @@ import dto.MemberDTO;
 public class MemberController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String cmd= request.getRequestURI();
+		
+		
+		String uri = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		String cmd = uri.substring(contextPath.length());
 		
 		MemberDAO dao = MemberDAO.getInstance();
 		
 		
 		try {
+			
 			if(cmd.equals("/login.member")) {
 				String id = request.getParameter("id");
 				String pw = Util.encrypt(request.getParameter("pw"));
@@ -31,15 +36,79 @@ public class MemberController extends HttpServlet {
 //					request.setAttribute("loginId", id);
 //					request.getRequestDispatcher("/index.jsp").forward(request, response);
 					request.getSession().setAttribute("loginId", id); //이제 이값은 전역변수로서 아무데서나 꺼낼 수 있음.
-					
+					response.sendRedirect("/");
 				}else {
 					System.out.println("로그인 실패");
 					response.sendRedirect("/");
 				}
 				
+			}else if(cmd.equals("/mypage.member")) { 
+				
+				String id = (String) request.getSession().getAttribute("loginId");
+			
+				MemberDTO dto =  dao.searchMemberinfoById(id);
+				
+				request.setAttribute("dto", dto);
+				
+				System.out.println("마이페이지 조회 아이디 :"+id);
+				System.out.println("Db 조회 체크:"+ dto.getName());
+				
+				
+				request.getRequestDispatcher("/member/myPage.jsp").forward(request, response);
 			}
-			else if(cmd.equals("/join.member")) {
+			
+			else if(cmd.equals("/logout.member")) {
+				System.out.println("로그아웃");
+				
+				request.getSession().invalidate();
+				//request.removeAttribute("loginId"); //특정 키값만 세션에서 제거
+				response.sendRedirect("/index.jsp");
+				
+			}else if(cmd.equals("/deleteCheck.member")) {
+				System.out.println("회원 탈퇴 체크");
+				request.getRequestDispatcher("/member/deleteCheck.jsp").forward(request, response);
+				
+			}else if(cmd.equals("/delete.member")) {
+				System.out.println("회원 탈퇴");
+				
+				String id= request.getParameter("userId");
+				System.out.println("탈퇴하려는 아이디: "+id);
+	
+				dao.deleteMember(id);
+				request.getSession().invalidate();
+				response.sendRedirect("/");
+				
+				
+			}else if(cmd.equals("/update.member")){
+				
+				System.out.println("마이페이지 수정 정보");
+				String id = (String) request.getSession().getAttribute("loginId");
+				String phone = request.getParameter("phone");
+				String email = request.getParameter("email");
+				String zoneCode = request.getParameter("zoneCode");
+				String address = request.getParameter("address");
+				String addressDetail  = request.getParameter("addressDetail");
+				
+				
+				MemberDTO dto = new MemberDTO(id, 
+						null, 
+						  null, 
+						  phone,
+						  email, 
+						  zoneCode, 
+						  address, 
+						  addressDetail);
+				dao.updateMember(dto);
+				
+				request.getRequestDispatcher("/mypage.member").forward(request, response);
+				
+			}else if(cmd.equals("/join.member")) {
+			
+				
+				System.out.println("회원가입 폼 이동");
 				response.sendRedirect("/member/joinform.jsp");
+				
+				
 			}else if(cmd.equals("/idcheck.member")) {
 				String id = request.getParameter("id");
 				System.out.println("전달 받은 아이디: " + id);
@@ -53,7 +122,9 @@ public class MemberController extends HttpServlet {
 				request.setAttribute("id", id);
 				request.getRequestDispatcher("/member/idcheck.jsp").forward(request, response);
 				
-			}else if(cmd.equals("/login.member")) {
+			}else if(cmd.equals("/insert.member")) {
+				
+				System.out.println("회원가입 정보");
 				
 				
 				String id = request.getParameter("id");
