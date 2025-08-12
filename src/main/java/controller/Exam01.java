@@ -48,5 +48,28 @@ public class Exam01 {
 		System.out.println("네비 종료:" +endNavi);
 		
 		
+		boolean needPrev = true;
+		boolean needNext = true;
+		
+		if(startNavi == 1) {
+			
+			needPrev = false;
+		}
+		
+		if(endNavi == pageTotalCount){
+			needNext=false;
+		}
+		
+		//ui
+		if(needNext) {
+			System.out.println("<");
+		}
+		for(int i=startNavi;i<=endNavi;i++) {
+			System.out.println(i + " ");
+		}
+		if(needNext) {
+			System.out.println(">");
+		}
+		
 	}
 }
