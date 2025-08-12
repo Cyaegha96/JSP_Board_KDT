@@ -157,7 +157,7 @@ public class BoardDAO {
 		}
 	}
 	
-	public String getPageNavi() throws Exception {
+	public String getPageNavi(int currentPage) throws Exception {
 	//페이지네이션
 		
 		
@@ -182,7 +182,6 @@ public class BoardDAO {
 		
 		//5. 내가 현재 있는 페이지 설정
 		
-		int currentPage = 1;
 		
 		if(currentPage <1) {
 			currentPage = 1;
@@ -221,13 +220,13 @@ public class BoardDAO {
 		
 		//ui
 		if(needPrev) {
-			sb.append("<");
+			sb.append("<a href='list.board?cpage="+(startNavi-1) +"'>  < </a>");
 		}
 		for(int i=startNavi;i<=endNavi;i++) {
-			sb.append(i + " ");
+			sb.append("<a href='/list.board?cpage=" +i+"'> "+ i+" </a>");
 		}
 		if(needNext) {
-			sb.append(">");
+			sb.append("<a href='list.board?cpage="+(endNavi + 1) +"'>  > </a>");
 		}
 		return sb.toString();
 	}

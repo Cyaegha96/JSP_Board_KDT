@@ -25,14 +25,28 @@ public class BoardController extends HttpServlet {
 		
 		try {
 			
+			
 			if(cmd.equals("/list.board")) {
 				System.out.println("게시판 진입");
 				
+				
+				int cpage = 0;
+				String cpageStr = request.getParameter("cpage");
+				
+				if(cpageStr != null) {
+					cpage = Integer.parseInt(cpageStr);
+				}else {
+					cpage = 1;
+				}
+				
 				List<BoardDTO> result =  boardDao.getAllBoard();
 				
-				String navi = boardDao.getPageNavi();
+				String navi = boardDao.getPageNavi(cpage);
+				
 				request.setAttribute("navi", navi);
 				request.setAttribute("list", result);
+				
+				
 				if(result.size() < 10) {
 					request.setAttribute("emptySize", 10-result.size());
 				}

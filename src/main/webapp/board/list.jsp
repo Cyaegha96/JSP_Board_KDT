@@ -94,14 +94,8 @@ background: linear-gradient(164deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 30%
 				</tbody>
 				<tr>
 					<td colspan="5" ><nav aria-label="Page navigation">
-<ul class="pagination justify-content-center">
-  <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-  <li class="page-item active"><a class="page-link " href="#">1</a></li>
-  <li class="page-item"><a class="page-link" href="#">2</a></li>
-  <li class="page-item"><a class="page-link" href="#">3</a></li>
-  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-</ul>
-</nav></td>
+${navi}
+</td>
 				</tr>
 				<tr>
 					<td colspan="5" class="text-end"> 
