@@ -39,8 +39,8 @@ public class BoardController extends HttpServlet {
 					cpage = 1;
 				}
 				
-				List<BoardDTO> result =  boardDao.getAllBoard();
-				
+				//List<BoardDTO> result =  boardDao.getAllBoard();
+				List<BoardDTO> result = boardDao.selectFromTo(cpage* 10 -9 , cpage * 10);
 				String navi = boardDao.getPageNavi(cpage);
 				
 				request.setAttribute("navi", navi);

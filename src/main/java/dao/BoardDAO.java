@@ -139,6 +139,41 @@ public class BoardDAO {
 		
 	}
 	
+	public List<BoardDTO> selectFromTo(int from, int to) throws Exception{
+		
+		List<BoardDTO> result = new ArrayList<>();
+		
+		String sql  = "select * from (select board.*, row_number() over(order by write_date desc) rn from board) where rn between ? and ? order by rn";
+		try(
+				Connection con = getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql)
+				
+				){
+			
+			pstmt.setInt(1, from);
+			pstmt.setInt(2, to);
+			
+			try(
+					ResultSet rs = pstmt.executeQuery();
+					){
+				while(rs.next()) {
+					BoardDTO dto = new BoardDTO();
+					
+					dto.setSeq(rs.getInt("seq"));
+					dto.setWriter(rs.getString("writer"));
+					dto.setTitle(rs.getString("title"));
+					dto.setWrite_date(rs.getTimestamp("write_date"));
+					dto.setView_count(rs.getInt("view_count"));
+					
+					result.add(dto);
+				}
+				return result;
+				
+			}
+			
+		}
+	}
+	
 	private int getRecordTotalCount() throws Exception{
 		String sql = "select count(*) from board";
 		int count =0;
@@ -162,7 +197,7 @@ public class BoardDAO {
 		
 		
 		//1. 전체 레코드 수가 몇개인지?
-		int recordTotalCount = 147;
+		int recordTotalCount = getRecordTotalCount();
 		
 		//2. 한페이지 안에 몇개의 게시글을 보여줄지?
 		int recordCountPerPage = 10;
@@ -198,11 +233,7 @@ public class BoardDAO {
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-		
-		System.out.println("현재 위치: "+currentPage);
-		System.out.println("네비 시작: "+startNavi);
-		System.out.println("네비 종료:" +endNavi);
-		
+	
 		
 		boolean needPrev = true;
 		boolean needNext = true;
@@ -218,16 +249,25 @@ public class BoardDAO {
 		
 		StringBuilder sb  = new StringBuilder();
 		
+		sb.append("<nav aria-label='Page navigation'><ul class='pagination justify-content-center'>");
+		
 		//ui
 		if(needPrev) {
-			sb.append("<a href='list.board?cpage="+(startNavi-1) +"'>  < </a>");
+			sb.append("<li class='page-item'><a class = 'page-link' href='list.board?cpage="+(startNavi-1) +"'> Previous </a></li>");
 		}
 		for(int i=startNavi;i<=endNavi;i++) {
-			sb.append("<a href='/list.board?cpage=" +i+"'> "+ i+" </a>");
+			if(i == currentPage) {
+				sb.append("<li class='page-item active'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
+			}else {
+				sb.append("<li class='page-item'><a class='page-link' href='/list.board?cpage="+i+"'>"+i +"</a></li>");
+			}
+		
 		}
 		if(needNext) {
-			sb.append("<a href='list.board?cpage="+(endNavi + 1) +"'>  > </a>");
+			sb.append("<li class='page-item'><a class='page-link' href='list.board?cpage="+(endNavi +1) +"'> Next </a></li>");
 		}
+		
+		sb.append("</ul></nav>");
 		return sb.toString();
 	}
 	

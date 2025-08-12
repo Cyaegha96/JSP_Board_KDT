@@ -22,13 +22,12 @@
 	
 	min-height: 500px;
 
-	
 	}
 	
 	.table_header{
 		
 	background: #020024;
-background: linear-gradient(164deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 30%, rgba(0, 212, 255, 1) 100%);
+	background: linear-gradient(164deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 30%, rgba(0, 212, 255, 1) 100%);
 	
 	}
 	
@@ -93,7 +92,7 @@ background: linear-gradient(164deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 30%
 				
 				</tbody>
 				<tr>
-					<td colspan="5" ><nav aria-label="Page navigation">
+					<td colspan="5" >
 ${navi}
 </td>
 				</tr>
