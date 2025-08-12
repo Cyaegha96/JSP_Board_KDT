@@ -30,12 +30,12 @@ public class BoardController extends HttpServlet {
 				
 				List<BoardDTO> result =  boardDao.getAllBoard();
 				
+				String navi = boardDao.getPageNavi();
+				request.setAttribute("navi", navi);
 				request.setAttribute("list", result);
 				if(result.size() < 10) {
 					request.setAttribute("emptySize", 10-result.size());
 				}
-				
-
 				
 				request.getRequestDispatcher("/board/list.jsp").forward(request, response);
 		
