@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 
 import javax.sql.DataSource;
 
+import commons.Config;
 import dto.BoardDTO;
 
 
@@ -143,7 +144,8 @@ public class BoardDAO {
 		
 		List<BoardDTO> result = new ArrayList<>();
 		
-		String sql  = "select * from (select board.*, row_number() over(order by write_date desc) rn from board) where rn between ? and ? order by rn";
+		String sql  = "select * from (select board.*, row_number() over(order by write_date desc) rn from board) "
+				+ "where rn between ? and ? order by rn";
 		try(
 				Connection con = getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)
@@ -174,7 +176,7 @@ public class BoardDAO {
 		}
 	}
 	
-	private int getRecordTotalCount() throws Exception{
+	public int getRecordTotalCount() throws Exception{
 		String sql = "select count(*) from board";
 		int count =0;
 		try(	Connection con = getConnection();
@@ -200,11 +202,11 @@ public class BoardDAO {
 		int recordTotalCount = getRecordTotalCount();
 		
 		//2. 한페이지 안에 몇개의 게시글을 보여줄지?
-		int recordCountPerPage = 10;
+		int recordCountPerPage = Config.RECORD_COUNT_PER_PAGE;
 		
 		//3. 한번에 네비게이터를 몇개씩 보여줄 것인지?
 		
-		int naviCountPerPage = 10;
+		int naviCountPerPage = Config.NAVI_COUNT_PER_PAGE;
 		
 		//4. 전체 몇 페이지가 생성될 것인지?
 		
@@ -239,8 +241,7 @@ public class BoardDAO {
 		boolean needNext = true;
 		
 		if(startNavi == 1) {
-			
-			needPrev = false;
+		 needPrev = false;
 		}
 		
 		if(endNavi == pageTotalCount){

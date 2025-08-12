@@ -85,7 +85,7 @@
 			</tr>
 			<tr>
 				
-				<td><a href="/list.board" class="text-decoration-none text-black fw-bold">회원게시판</td>
+				<td><a href="/list.board?cpage=1" class="text-decoration-none text-black fw-bold">회원게시판</td>
 				<td>
 					<a href="/mypage.member" class="text-decoration-none text-black fw-bold">마이페이지</a>
 				

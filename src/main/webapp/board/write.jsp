@@ -60,7 +60,7 @@
 				
 				<tr>
 					<td colspan="5" class="text-end"> 
-							<a href="/list.board"><button type="button">목록으로</button></a>
+							<a href="/list.board?cpage=1"><button type="button">목록으로</button></a>
 							<a ><button type="submit" id="submitbtn">작성완료</button></a>
 					</td>
 				</tr>

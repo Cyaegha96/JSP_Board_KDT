@@ -93,8 +93,11 @@
 				</tbody>
 				<tr>
 					<td colspan="5" >
-${navi}
-</td>
+						<nav aria-label='Page navigation'>
+							<ul class="pagination justify-content-center">
+							</ul>
+						</nav>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="5" class="text-end"> 
@@ -107,7 +110,96 @@ ${navi}
 	</c:choose>
 	
 	<script type="text/javascript">
+		let recordTotalCount = ${recordTotalCount};
+		let recordCountPerPage = ${recordCountPerPage};
+		let naviCountPerPage = ${naviCountPerPage};
+		let currentPage = ${currentPage};
+		
+		$(window).on("load", function(){
+			
+			if(recordTotalCount%recordCountPerPage > 0) {
+				pageTotalCount  = recordTotalCount/recordCountPerPage + 1;
+			}else {
+				pageTotalCount  = recordTotalCount/recordCountPerPage;
+			}
+			
+			if(currentPage <1){
+				currentPage = 1;
+			}else if(currentPage > pageTotalCount){
+				currentPage = pageTotalCount;
+			}
+			
+			let startNavi =  Math.floor((currentPage-1) / naviCountPerPage) * naviCountPerPage +1;
+			let endNavi = startNavi + naviCountPerPage -1;
+			console.log("startNavi: "+startNavi);
+			console.log("endNavi: "+endNavi);
+			
+			if(endNavi > pageTotalCount ){
+				endNavi = pageTotalCount;
+			}
+			
+			let needPrev = true;
+			let needNext = true;
+			
+			if(startNavi ==1){
+				 needPrev = false;
+			}
+			
+			if(endNavi == pageTotalCount){
+				needNext=false;
+			}
+			
+			
+			
+			if(needPrev){
+				
+				$(".pagination")
+				.append($("<li>")
+						.addClass("page-item")
+						.append($("<a>")
+								.addClass("page-link")
+								.text("previous")
+								.attr("href","/list.board?cpage="+(startNavi - 1))));
+			}
+			
+			for(let i = startNavi; i<=endNavi; i++){
+				
+				if(i == currentPage){
+					$(".pagination")
+					.append($("<li>")
+							.addClass("page-item")
+							.append($("<a>")
+									.addClass("page-link active")
+									.text(i)
+									.attr("href","/list.board?cpage="+i)));
+				}else{
+					$(".pagination")
+					.append($("<li>")
+							.addClass("page-item")
+							.append($("<a>")
+									.addClass("page-link")
+									.text(i)
+									.attr("href","/list.board?cpage="+i)));
+				}
+				
+			
+			}
+			
+			if(needNext){
 	
+				$(".pagination")
+				.append($("<li>")
+						.addClass("page-item")
+						.append($("<a>")
+								.addClass("page-link")
+								.text("Next")
+								.attr("href","/list.board?cpage="+(endNavi + 1))));
+			}
+			
+			
+		});
+		
+		
 	</script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import commons.Config;
 import dao.BoardDAO;
 import dto.BoardDTO;
 
@@ -31,6 +32,7 @@ public class BoardController extends HttpServlet {
 				
 				
 				int cpage = 0;
+
 				String cpageStr = request.getParameter("cpage");
 				
 				if(cpageStr != null) {
@@ -39,12 +41,21 @@ public class BoardController extends HttpServlet {
 					cpage = 1;
 				}
 				
-				//List<BoardDTO> result =  boardDao.getAllBoard();
-				List<BoardDTO> result = boardDao.selectFromTo(cpage* 10 -9 , cpage * 10);
-				String navi = boardDao.getPageNavi(cpage);
 				
-				request.setAttribute("navi", navi);
+				List<BoardDTO> result = boardDao.selectFromTo(
+						cpage* Config.RECORD_COUNT_PER_PAGE -(Config.RECORD_COUNT_PER_PAGE-1) , 
+						cpage * Config.RECORD_COUNT_PER_PAGE);
+				
+//				String navi = boardDao.getPageNavi(cpage);
+				
+//				request.setAttribute("navi", navi);
 				request.setAttribute("list", result);
+				
+				request.setAttribute("recordTotalCount",boardDao.getRecordTotalCount());
+				request.setAttribute("recordCountPerPage", Config.RECORD_COUNT_PER_PAGE);
+				request.setAttribute("naviCountPerPage", Config.NAVI_COUNT_PER_PAGE);
+				request.setAttribute("currentPage", cpage);
+				
 				
 				
 				if(result.size() < 10) {
@@ -79,7 +90,7 @@ public class BoardController extends HttpServlet {
 				
 				if(boardDao.insertBoard(new BoardDTO(0,id, title, content, null, 0)) > 0) {
 					System.out.println("게시글 db삽입 성공");
-					response.sendRedirect("/list.board");
+					response.sendRedirect("/list.board?cpage=1");
 				}
 				//글 조회
 			}
@@ -98,7 +109,7 @@ public class BoardController extends HttpServlet {
 				
 				if(boardDao.deleteBoard(seq) > 0) {
 					System.out.println("삭제 성공");
-					response.sendRedirect("/list.board");
+					response.sendRedirect("/list.board?cpage=1");
 					
 				}else {
 					System.out.println("삭제 실패");

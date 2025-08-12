@@ -62,7 +62,7 @@
 					<button id="deleteBtn"  type="button" class="btn btn-outline-danger">삭제하기</button>
 					
 				</c:if>
-					<a href="/list.board" id ="toBoardBtn"><button type="button" class="btn btn-outline-primary">목록으로</button></a>
+					<a href="/list.board?cpage=1" id ="toBoardBtn"><button type="button" class="btn btn-outline-primary">목록으로</button></a>
 				</div>
 				</form>
 			</div>
