@@ -10,7 +10,9 @@ import java.util.List;
 
 import commons.Config;
 import dao.BoardDAO;
+import dao.ReplyDAO;
 import dto.BoardDTO;
+import dto.ReplyDTO;
 
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
@@ -23,6 +25,7 @@ public class BoardController extends HttpServlet {
 		String cmd = uri.substring(contextPath.length());
 		
 		BoardDAO boardDao = BoardDAO.getInstance();
+		ReplyDAO replyDao = ReplyDAO.getInstance();
 		
 		try {
 			
@@ -46,9 +49,7 @@ public class BoardController extends HttpServlet {
 						cpage* Config.RECORD_COUNT_PER_PAGE -(Config.RECORD_COUNT_PER_PAGE-1) , 
 						cpage * Config.RECORD_COUNT_PER_PAGE);
 				
-//				String navi = boardDao.getPageNavi(cpage);
-				
-//				request.setAttribute("navi", navi);
+
 				request.setAttribute("list", result);
 				
 				request.setAttribute("recordTotalCount",boardDao.getRecordTotalCount());
@@ -70,10 +71,13 @@ public class BoardController extends HttpServlet {
 			
 				String seqnum = request.getParameter("seqnum");
 				
-				BoardDTO dto = boardDao.getDetailBoard(seqnum);
-				boardDao.viewCountIncrease(seqnum);
-				request.setAttribute("board", dto);
+				BoardDTO board = boardDao.getDetailBoard(seqnum);
+				List<ReplyDTO> replyList = replyDao.getReplysBySeqnum(seqnum);
 				
+				
+				boardDao.viewCountIncrease(seqnum);
+				request.setAttribute("board", board);
+				request.setAttribute("replyList", replyList);
 				request.getRequestDispatcher("/board/detail.jsp").forward(request, response);
 				
 				
@@ -133,6 +137,7 @@ public class BoardController extends HttpServlet {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
+			response.sendRedirect("/error.jsp");
 		}
 		
 		

@@ -1,10 +1,12 @@
 package dao;
 
 
+import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +87,7 @@ public class BoardDAO {
 					dto.setWriter(rs.getString("writer"));
 					dto.setTitle(rs.getString("title"));
 					dto.setView_count(rs.getInt("view_count"));
-					dto.setWrite_date(rs.getTimestamp("write_date"));
+					dto.setWrite_date(new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm").format(rs.getTimestamp("write_date")));
 
 					return dto;
 
@@ -119,7 +121,8 @@ public class BoardDAO {
 	
 	public int insertBoard(BoardDTO dto) throws Exception, Exception {
 		
-		String sql = "insert into board values( board_seq.nextval, ?,  ? , ?, SYSDATE, default )";
+		String sql = "INSERT INTO board (seq, writer, title, contents, write_date, view_count)"
+				+ "VALUES (board_seq.nextval, ?, ?, ?, SYSDATE, default)";
 
 		try(
 				Connection con = getConnection();
@@ -132,7 +135,7 @@ public class BoardDAO {
 			
 			pstmt.setString(1, id);
 			pstmt.setString(2, title);
-			pstmt.setString(3, content);
+			pstmt.setClob(3, new StringReader(content));
 			
 			return pstmt.executeUpdate();
 			
@@ -164,7 +167,7 @@ public class BoardDAO {
 					dto.setSeq(rs.getInt("seq"));
 					dto.setWriter(rs.getString("writer"));
 					dto.setTitle(rs.getString("title"));
-					dto.setWrite_date(rs.getTimestamp("write_date"));
+					dto.setWrite_date(new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm").format(rs.getTimestamp("write_date")));
 					dto.setView_count(rs.getInt("view_count"));
 					
 					result.add(dto);
@@ -294,7 +297,7 @@ public class BoardDAO {
 					dto.setSeq(rs.getInt("seq"));
 					dto.setWriter(rs.getString("writer"));
 					dto.setTitle(rs.getString("title"));
-					dto.setWrite_date(rs.getTimestamp("write_date"));
+					dto.setWrite_date(new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm").format(rs.getTimestamp("write_date")));
 					dto.setView_count(rs.getInt("view_count"));
 					
 					result.add(dto);

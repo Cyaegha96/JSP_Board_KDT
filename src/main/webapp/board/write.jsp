@@ -38,7 +38,7 @@
 				
 				<tr>
 					<td class="text-start" width="80%">
-					<input name="title" type="text" placeholder="글 제목을 입력하세요" class="w-100">
+					<input id="inputTitle" name="title" type="text" placeholder="글 제목을 입력하세요" class="w-100">
 					</td>
 				</tr>
 					<tr > 
@@ -72,8 +72,20 @@
 
 	 $("#writeBoardFrm").on("submit", function() {
 		  
+		 
+		 
 		    const hiddenInput = document.getElementById('hiddenContent');
 		    hiddenInput.value =  $('#summernote').summernote('code');
+		    
+		    if($("#inputTitle").val() === ""){
+		    	alert("제목은 최소 1자 이상 작성해야 합니다.");
+		    	return false;
+		    }
+		    
+		    if(hiddenInput.value === "<p><br></p>"){
+		    	alert("게시글의 내용은 최소 1자 이상 작성해야 합니다.");
+		    	return false;
+		    }
 		  })
 		  
 	$(document).ready(function() {

@@ -19,14 +19,37 @@
 <style>
 * {
 	box-sizing: border-box;
+	
 }
+
+.transparent-table{
+	background-color: transparent !important;
+    color: white !important;
+
+}
+
+.transparent-table th,
+.transparent-table td {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+
+	spline-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1; /* 배경으로 보내기 */
+    }
+
 </style>
 </head>
-<body>
+<body class="d-flex justify-content-center align-items-center">
 	<c:choose>
 		<c:when test="${loginId==null}">
 			<div
-		class="Login_conatiner card m-auto p-3 rounded-2 border-primary d-flex justify-content-center "
+		class="Login_conatiner card m-auto p-3 rounded-2 border-primary d-flex justify-content-center align-items-center"
 		style="width: 80%;">
 
 		<form action="/login.member" method="post" class="Login_form needs-validation"
@@ -79,7 +102,8 @@
 		
 		</c:when>
 		<c:otherwise>
-		<table border="1" class="table text-center">
+		<div class="container d-flex justify-content-center align-items-center vh-100">
+		<table border="1" class="table text-center p-5 bg-light border rounded transparent-table">
 			<tr>
 				<th colspan="4">${loginId} 님 안녕하세요.</th>
 			</tr>
@@ -100,10 +124,12 @@
 		<form id="withdrawForm" action="/delete.member" method="post">
 		  <input type="hidden" name="userId" value="${loginId}"> <!-- 필요 시 사용자 정보 -->
 		</form>
+		</div>
 		
 		</c:otherwise>	
 	</c:choose>
-
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.45/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/BURdK6cjbJicYHgy/scene.splinecode"></spline-viewer>
 	
 	<script>
 	
