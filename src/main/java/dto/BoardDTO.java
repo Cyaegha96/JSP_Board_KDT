@@ -1,7 +1,5 @@
 package dto;
 
-import java.sql.Timestamp;
-
 public class BoardDTO {
 	
 	private int seq;

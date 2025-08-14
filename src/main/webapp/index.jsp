@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+	
 	
 <!doctype html>
 <html lang="ko">
@@ -45,7 +45,10 @@
 
 </style>
 </head>
-<body class="d-flex justify-content-center align-items-center">
+<body>
+ <div>
+ 
+ </div>
 	<c:choose>
 		<c:when test="${loginId==null}">
 			<div
