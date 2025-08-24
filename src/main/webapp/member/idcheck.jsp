@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
+<<<<<<< HEAD
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+=======
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+>>>>>>> branch 'master' of https://github.com/Cyaegha96/JSP_Board_KDT
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,35 +20,33 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
 	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	crossorigin="anonymous"></script>
-	<style type="text/css">
-	.test{
-	
-		color:aqua;
-	}
-	
-	</style>
+<style type="text/css">
+.test {
+	color: aqua;
+}
+</style>
 </head>
 <body>
-	
+
 	<div class="card border-primary mt-1  d-flex justify-content-center">
 		<div class="card-title text-center bg-primary text-white">
 			<h3>
-			<c:choose>
-				<c:when test="${isIdExist}">
+				<c:choose>
+					<c:when test="${isIdExist}">
 					${id} 아이디가 중복입니다.
 				</c:when>
-				<c:when test="${!isIdExist}">
+					<c:when test="${!isIdExist}">
 					${id} 아이디가 중복이 아닙니다.
 				</c:when>
-			</c:choose>
+				</c:choose>
 			</h3>
 		</div>
 		<div class="card-body text-center">
 			<c:choose>
 				<c:when test="${isIdExist}">
 					<div>다른 아이디를 입력해주세요.</div>
-					<button id ="okBtn" type="button" class="btn btn-primary mt-3 ">닫기</button>
-					<script >
+					<button id="okBtn" type="button" class="btn btn-primary mt-3 ">닫기</button>
+					<script>
 					
 						
 						$('#okBtn').click(function(){
@@ -53,14 +55,15 @@
 						});	
 					
 					</script>
-					</c:when>
+				</c:when>
 				<c:when test="${!isIdExist}">
 					<div>[ ${id } ] 이 아이디를 사용하겠습니까?</div>
 					<div class="m-auto d-flex justify-content-center mt-3">
 						<button id="okBtn" type="button" class="btn btn-primary usableBtn">사용</button>
-						<button id="cancleBtn" type="button" class="btn btn-primary usableBtn">취소</button>
+						<button id="cancleBtn" type="button"
+							class="btn btn-primary usableBtn">취소</button>
 					</div>
-					<script >
+					<script>
 					
 						
 						$('#okBtn').click(function(){
@@ -77,8 +80,8 @@
 			</c:choose>
 		</div>
 	</div>
-	
-	
+
+
 
 </body>
 </html>

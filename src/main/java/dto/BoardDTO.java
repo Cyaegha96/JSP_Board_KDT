@@ -1,7 +1,9 @@
 package dto;
 
+import java.sql.Timestamp;
+
 public class BoardDTO {
-	
+
 	private int seq;
 	private String writer;
 	private String title ;
@@ -11,12 +13,14 @@ public class BoardDTO {
 	public int getSeq() {
 		return seq;
 	}
-	
+
 	public BoardDTO() {
-		
+
 	}
-	
+
+
 	public BoardDTO(int seq, String writer, String title, String contents, String write_date, int view_count) {
+
 		super();
 		this.seq = seq;
 		this.writer = writer;

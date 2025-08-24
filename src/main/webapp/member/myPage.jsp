@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
     	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +28,7 @@
 		<div class="row g-3 m-2">
 				<label for="inputId" class="col-sm-2 col-form-label text-start text-sm-end">ID</label>
 				<div class="col-sm-4">
-					<h2>${dto.id }</h2>
+					<h2 id = "ajaxInputId">아이디</h2>
 				</div>
 				
 		</div>	
@@ -35,7 +37,7 @@
 		<div class="row g-3 m-2">
 				<label for="inputName" class="col-sm-2 col-form-label text-start text-sm-end">이름</label>
 				<div class="col-sm-6">
-					<h2>${dto.name }</h2>
+					<h2 id="ajaxInputName">이름</h2>
 
 				</div>
 				
@@ -43,10 +45,10 @@
 		<div class="row g-3 m-2">
 				<label for="inputPhone" class="col-sm-2 col-form-label text-start text-sm-end">전화번호</label>
 				<div class="col-sm-6">
-				<h2 class="viewMode" >${dto.phoneNumber}</h2>
+				<h2 class="viewMode" id="ajaxInputPhone" >폰번호</h2>
 					<div class="editMode d-none">
 					<input type="text" class="form-control" id="inputPhone" name="phone"
-						placeholder="전화번호를 입력하세요 예 (010-1234-5678)" value="${dto.phoneNumber}">
+						placeholder="전화번호를 입력하세요 예 (010-1234-5678)" >
 					
 					</div>
 				</div>
@@ -55,10 +57,10 @@
 		<div class="row g-3 m-2">
 				<label for="inputEmail" class="col-sm-2 col-form-label text-start text-sm-end">이메일</label>
 				<div class="col-sm-6">
-				<h2 class="viewMode" >${dto.email}</h2>
+				<h2 class="viewMode" id="ajaxInputEmail" >이메일</h2>
 					<div class="editMode d-none">
 					<input type="text" class="form-control" id="inputEmail" name="email"
-						placeholder="이메일을 입력하세요" value="${dto.email}">
+						placeholder="이메일을 입력하세요" >
 					
 					</div>
 
@@ -68,10 +70,10 @@
 		<div class="row g-3 m-2">
 				<label for="inputZoneCode" class="col-sm-2 col-form-label text-start text-sm-end">우편번호</label>
 				<div class="col-sm-6">
-				<h2 class="viewMode" >${dto.zonecode}</h2>
+				<h2 class="viewMode" id="ajaxInputZonecode" >우편번호</h2>
 				<div class="editMode d-none">
 					<input type="text" class="form-control" id="inputZoneCode" name="zoneCode" readonly
-						placeholder="우편번호" value="${dto.zonecode}">
+						placeholder="우편번호" >
 				</div>
 				</div>
 				<div class="editMode d-none col-sm-2">
@@ -82,10 +84,10 @@
 		<div class="row g-3 m-2">
 				<label for="inputAddress" class="col-sm-2 col-form-label text-start text-sm-end">주소</label>
 				<div class="col-sm-8">
-				<h2 class="viewMode" >${dto.address}</h2>
+				<h2 class="viewMode" id="ajaxInputAddress" >주소</h2>
 				<div class="editMode d-none">
 					<input type="text" class="form-control" id="inputAddress" name="address" readonly
-						placeholder="주소를 입력하세요" value="${dto.address}" >
+						placeholder="주소를 입력하세요"  >
 				</div>
 				</div>
 				
@@ -93,10 +95,10 @@
 		<div class="row g-3 m-2">
 				<label for="inputAddressDetail" class="col-sm-2 col-form-label text-start text-sm-end">상세주소</label>
 				<div class="col-sm-8">
-				<h2 class="viewMode" >${dto.addressDetail}</h2>
+				<h2 class="viewMode" id="ajaxInputAddressDetail" >상세주소</h2>
 				<div class="editMode d-none">
 					<input type="text" class="form-control" id="inputAddressDetail" name="addressDetail"
-						placeholder="상세주소를 입력하세요" value="${dto.addressDetail}">
+						placeholder="상세주소를 입력하세요" >
 					</div>
 				</div>
 				
@@ -104,7 +106,7 @@
 		<div class="row g-3 m-2">
 				<label for="inputCreatedTime" class="col-sm-2 col-form-label text-start text-sm-end">가입 날짜</label>
 				<div class="col-sm-8">
-					<h2 id = "createdAt">${dto.createdAt }</h2>
+					<h2 id = "createdAt">생성일</h2>
 
 				</div>
 				
@@ -204,6 +206,41 @@
 	        }
 		
 		});
+		
+		$(function(){ //window.onload~ document.onload 랑 같은거. 즉 화면이 로드되는게 완료되면 바로 실행되는 함수.
+				$.ajax({
+					url:"/mypageIbuttlineonnfo.member",
+					dataType:"json",
+					method:"post"
+				}).done(function(resq){
+					console.log(resq);
+					
+					$("#ajaxInputId").text(resq.id);
+					
+					$("#ajaxInputName").text(resq.name);
+					
+					
+					$("#ajaxInputPhone").text(resq.phoneNumber);
+					$("#inputPhone").val(resq.phoneNumber);
+					
+					$("#ajaxInputEmail").text(resq.email);
+					$("#inputEmail").val( resq.email);
+					
+					$("#ajaxInputZonecode").text(resq.zonecode);
+					$("#inputZoneCode").val(resq.zonecode);
+					
+					
+					$("#ajaxInputAddress").text(resq.address);
+					$("#inputAddress").val(resq.address);
+					
+					$("#ajaxInputAddressDetail").text(resq.addressDetail);
+					$("#inputAddressDetail").val(resq.addressDetail);
+				
+					$("#createdAt").text(resq.createdAt);
+				
+				
+				})
+		})
 	
 	</script>
 	

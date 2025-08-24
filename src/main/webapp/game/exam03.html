@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연습 2안 구현 연습</title>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/ScrollToPlugin.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+	crossorigin="anonymous"></script>
+<link
+	href="https://websseu.github.io/fontkor/fonts/NexonLv1Gothic/NexonLv1Gothic.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Italianno&display=swap"
+	rel="stylesheet">
+<style>
+* {
+	box-sizing: border-box;
+}
+
+body {
+	color: #fff;
+	font-family: "NexonLv1Gothic";
+	font-weight: 300;
+	height: 3401px;
+	background: 121212;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1)
+		100%);
+}
+
+.carousel-wrapper {
+	width: 1200px;
+	/* 한 슬라이드 기준 */
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 40px 0;
+	position: relative;
+}
+
+.carousel {
+	display: flex;
+	gap: 20px;
+	margin: 0 -300px;
+	/* 옆 슬라이드 일부 노출 */
+	padding: 0 300px;
+	position: relative;
+}
+
+.slide {
+	flex: 0 0 1200px;
+	height: 370px;
+	border-radius: 15px;
+	overflow: hidden;
+	cursor: grab;
+	transition: transform 0.3s;
+	position: relative;
+	z-index: 1;
+	/* 기본: 중앙 아래 */
+}
+
+.slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.overlay {
+	position: absolute;
+	bottom: 0;
+	/* 이미지 하단에 겹치기 */
+	left: 0;
+	right: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+	color: #fff;
+	padding: 20px;
+}
+
+.overlay2 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 20px;
+}
+
+.overlay2 button {
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+}
+
+.overlay2 button>* {
+	filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+}
+
+.game-title {
+	font-size: 24px;
+	margin: 0 0 10px;
+}
+
+.game-info {
+	font-size: 14px;
+	margin: 0 0 15px;
+}
+
+.indicators {
+	position: absolute;
+	bottom: 0px;
+	/* 슬라이드 하단 */
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 8px;
+}
+
+.dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #D9D9D9;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+.dot.active {
+	background: #FFD700;
+}
+
+.hr-text-wrapper {
+	position: relative;
+	text-align: center;
+	margin-top: 15%;
+	margin-bottom: 15%;
+}
+
+.hr-gradient {
+	height: 40px;
+	background: linear-gradient(to right, #00bfff, #ff4c4c);
+	position: relative;
+}
+
+.hr-text {
+	font-family: "Italianno", cursive;
+	font-weight: 400;
+	font-style: normal;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 0 1rem;
+	font-size: 4rem;
+}
+
+.mt-200 {
+	margin-top: 200px;
+}
+</style>
+
+</head>
+
+<body>
+	<div class="main_container conatiner-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid d-flex align-items-center">
+				<!-- 왼쪽 로고 -->
+				<div class="me-auto">
+					<a href="exam03.html"> <img src="img/logo.svg" alt="로고.svg"
+						width="120px">
+					</a>
+
+				</div>
+
+				<!-- 중앙 검색폼 -->
+				<div class="mx-auto w-50">
+					<form class="d-inline-flex w-100" role="search">
+						<input class="form-control rounded-pill" type="search"
+							placeholder="게시글 검색" aria-label="Search" />
+					</form>
+				</div>
+
+
+				<!-- 오른쪽 메뉴 -->
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav ms-auto">
+						<a class="nav-link active" href="#">Home</a> <a class="nav-link"
+							href="#">Community</a> <a class="nav-link" href="#">Game</a>
+						<button class="btn btn-warning ms-3">Login</button>
+						<button class="btn btn-dark ms-3">Register</button>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="row">
+			<div class="col-12 d-flex justify-content-center my-5">
+				<h4 id="heading">RECOMMENDED FOR YOU 🔥</h4>
+			</div>
+		</div>
+		<div class="carousel-wrapper">
+			<div class="carousel">
+				<div class="slide">
+					<img src="img/carousel-exam-01.jpg" alt="게임1">
+					<div class="overlay">
+						<h2 class="game-title">Game Title1</h2>
+						<p class="game-info">
+							Game info text 가 여기 들어갑니다.<br> 궁시렁궁시렁 어쩌구저쩌구 블라블라
+						</p>
+						<p>★★★☆☆ 플레이 횟수 345</p>
+						<button class="btn btn-dark">tag1</button>
+						<button class="btn btn-dark">tag2</button>
+					</div>
+					<div class="overlay2">
+						<button type="button" class="btn p-0 border-0 bg-transparent">
+							<img src="img/Star.svg" alt="별"
+								style="width: 30px; height: 30px;">
+							<p>즐겨찾기</p>
+						</button>
+
+					</div>
+				</div>
+				<div class="slide">
+					<img src="img/carousel-exam-02.jpg" alt="게임2">
+					<div class="overlay">
+						<h2 class="game-title">Game Title2</h2>
+						<p class="game-info">
+							Game info text 가 여기 들어갑니다.<br> 궁시렁궁시렁 어쩌구저쩌구 블라블라
+						</p>
+						<p>★★★☆☆ 플레이 횟수 345</p>
+						<button class="btn btn-dark">tag1</button>
+						<button class="btn btn-dark">tag2</button>
+					</div>
+					<div class="overlay2">
+						<button type="button" class="btn p-0 border-0 bg-transparent">
+							<img src="img/Star.svg" alt="별"
+								style="width: 30px; height: 30px;">
+							<p>즐겨찾기</p>
+						</button>
+
+					</div>
+				</div>
+				<div class="slide">
+					<img src="img/carousel-exam-03.jpg" alt="게임3">
+					<div class="overlay">
+						<h2 class="game-title">Game Title3</h2>
+						<p class="game-info">
+							Game info text 가 여기 들어갑니다.<br> 궁시렁궁시렁 어쩌구저쩌구 블라블라
+						</p>
+						<p>★★★☆☆ 플레이 횟수 345</p>
+						<button class="btn btn-dark">tag1</button>
+						<button class="btn btn-dark">tag2</button>
+					</div>
+					<div class="overlay2">
+						<button type="button" class="btn p-0 border-0 bg-transparent">
+							<img src="img/Star.svg" alt="별"
+								style="width: 30px; height: 30px;">
+							<p>즐겨찾기</p>
+						</button>
+
+					</div>
+				</div>
+				<div class="slide">
+					<img src="img/carousel-exam-04.jpg" alt="게임4">
+					<div class="overlay">
+						<h2 class="game-title">Game Title4</h2>
+						<p class="game-info">
+							Game info text 가 여기 들어갑니다.<br> 궁시렁궁시렁 어쩌구저쩌구 블라블라
+						</p>
+						<p>★★★☆☆ 플레이 횟수 345</p>
+						<button class="btn btn-dark">tag1</button>
+						<button class="btn btn-dark">tag2</button>
+					</div>
+					<div class="overlay2">
+						<button type="button" class="btn p-0 border-0 bg-transparent">
+							<img src="img/Star.svg" alt="별"
+								style="width: 30px; height: 30px;">
+							<p>즐겨찾기</p>
+						</button>
+
+					</div>
+				</div>
+				<div class="slide">
+					<img src="img/carousel-exam-05.jpg" alt="게임5">
+					<div class="overlay">
+						<h2 class="game-title">Game Title5</h2>
+						<p class="game-info">
+							Game info text 가 여기 들어갑니다.<br> 궁시렁궁시렁 어쩌구저쩌구 블라블라
+						</p>
+						<p>★★★☆☆ 플레이 횟수 345</p>
+						<button class="btn btn-dark">tag1</button>
+						<button class="btn btn-dark">tag2</button>
+					</div>
+					<div class="overlay2">
+						<button type="button" class="btn p-0 border-0 bg-transparent">
+							<img src="img/Star.svg" alt="별"
+								style="width: 30px; height: 30px;">
+							<p>즐겨찾기</p>
+						</button>
+
+					</div>
+				</div>
+			</div>
+			<div class="indicators">
+				<span class="dot"></span> <span class="dot"></span> <span
+					class="dot active"></span> <span class="dot"></span> <span
+					class="dot"></span>
+			</div>
+		</div>
+		<div class="d-flex justify-content-center"
+			style="margin-top: 128px; margin-bottom: 128px;">
+			<img src="img/logo.svg" alt="로고.svg" width="128px">
+		</div>
+		<div class="container my-5 popular-section">
+			<h1 class="text-start mb-4">인기 게시글</h1>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title ">카드 제목 1</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title">카드 제목 2</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title">카드 제목 3</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container my-5 recent-section">
+			<h1 class="text-start mb-4">최근 게시글</h1>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title">카드 제목 1</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title">카드 제목 2</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="section">
+						<div class="card-body fs-6 p-5">
+							<h5 class="card-title">카드 제목 3</h5>
+							<p class="card-text">Body text for whatever you’d like to
+								say. Add main takeaway points, quotes, anecdotes, or even a very
+								very short story.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hr-text-wrapper">
+			<div class="hr-gradient"></div>
+			<span class="hr-text">Gamer Ranking</span>
+		</div>
+		<div
+			class="rank-wrapper d-flex justify-content-center align-items-center">
+			<div class="container my-5 rank-section row ">
+				<div class="col-12 col-md-6">
+					<div class="row rank-image-row">
+						<img class="img-fluid" src="img/rank-game-1.jpg" alt="rank-game-1">
+					</div>
+
+					<div id="medal-section-1" class="row medal-row mt-200">
+						<!-- 2위 -->
+						<div class="medal2 col-4 d-flex flex-column align-items-center">
+							<img src="img/medal2.svg" class="img-fluid" alt="2nd place">
+							<span>nickname</span>
+						</div>
+
+						<!-- 1위 -->
+						<div class="medal1 col-4 d-flex flex-column align-items-center"
+							style="margin-top: -60px;">
+							<img src="img/medal1.svg" class="img-fluid" alt="1st place">
+							<span>nickname</span>
+						</div>
+
+						<!-- 3위 -->
+						<div class="medal3 col-4 d-flex flex-column align-items-center">
+							<img src="img/medal3.svg" class="img-fluid" alt="3rd place">
+							<span>nickname</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="row rank-image-row">
+						<img class="img-fluid" src="img/rank-game-2.jpg" alt="rank-game-2">
+					</div>
+					<div id="medal-section-2" class="row  medal-row mt-200">
+						<div class="medal2 col-4 d-flex flex-column align-items-center">
+							<img src="img/medal2.svg" class="img-fluid" alt="2nd place">
+							<span>nickname</span>
+						</div>
+
+						<!-- 1위 -->
+						<div class="medal1 col-4 d-flex flex-column align-items-center"
+							style="margin-top: -60px;">
+							<img src="img/medal1.svg" class="img-fluid" alt="1st place">
+							<span>nickname</span>
+						</div>
+
+						<!-- 3위 -->
+						<div class="medal3 col-4 d-flex flex-column align-items-center">
+							<img src="img/medal3.svg" class="img-fluid" alt="3rd place">
+							<span>nickname</span>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<footer class="bg-dark text-white pt-5 pb-4"
+			style="margin-top: 450px;">
+			<div class="container text-md-left">
+				<div class="row">
+
+					<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+						<h6 class="text-uppercase fw-bold">우리잘하조</h6>
+						<p>
+							시안2 실습 -<br> css로 과연 똑같이 구현이 가능할 것인가
+						</p>
+					</div>
+
+
+					<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+						<h6 class="text-uppercase fw-bold">회원</h6>
+						<p>
+							<a href="#" class="text-white text-decoration-none">마이페이지</a>
+						</p>
+						<p>
+							<a href="#" class="text-white text-decoration-none">친구</a>
+						</p>
+						<p>
+							<a href="#" class="text-white text-decoration-none">리뷰</a>
+						</p>
+					</div>
+
+
+					<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+						<h6 class="text-uppercase fw-bold">사이트</h6>
+						<p>
+							<a href="#" class="text-white text-decoration-none">홈</a>
+						</p>
+						<p>
+							<a href="#" class="text-white text-decoration-none">커뮤니티</a>
+						</p>
+						<p>
+							<a href="#" class="text-white text-decoration-none">게임</a>
+						</p>
+					</div>
+
+
+					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+						<h6 class="text-uppercase fw-bold">연락처</h6>
+						<p>
+							<i class="bi bi-envelope"></i> contact@example.com
+						</p>
+						<p>
+							<i class="bi bi-phone"></i> +82 10-1234-5678
+						</p>
+						<p>
+							<a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+							<a href="#" class="text-white me-2"><i
+								class="bi bi-instagram"></i></a> <a href="#" class="text-white"><i
+								class="bi bi-twitter"></i></a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="text-center p-3 bg-secondary">© 2025 우리잘하조. All
+				rights reserved.</div>
+		</footer>
+
+	</div>
+	<script>
+        gsap.registerPlugin(SplitText);
+
+        gsap.set("h2", { opacity: 1 });
+
+        let split = SplitText.create("#heading", { type: "words" });
+        //now animate each character into place from 20px below, fading in:
+        gsap.from(split.words, {
+            y: 20,
+            autoAlpha: 0,
+            stagger: 0.10
+        });
+
+        gsap.registerPlugin(Draggable);
+
+        const carousel = document.querySelector(".carousel");
+        const dots = document.querySelectorAll(".dot");
+        let slides = gsap.utils.toArray(".slide");
+        const slideWidth = 1200 + 20;
+        const totalSlides = slides.length;
+
+        // 앞뒤 슬라이드 복제 (원형 효과)
+        for (let i = 0; i < totalSlides; i++) {
+            carousel.appendChild(slides[i].cloneNode(true));
+            carousel.insertBefore(slides[totalSlides - 1 - i].cloneNode(true), carousel.firstChild);
+        }
+        slides = gsap.utils.toArray(".slide");
+
+        // 초기 중앙: 원본 3번째
+        let currentIndex = totalSlides + 2;
+        gsap.set(carousel, { x: -slideWidth * currentIndex });
+
+        // 중앙 강조 & z-index 처리
+        function updateCenter() {
+            const centerX = -gsap.getProperty(carousel, "x") + carousel.parentElement.offsetWidth / 2;
+            slides.forEach(slide => {
+                const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+
+                // 중앙일수록 z-index 높음 → 중앙 슬라이드가 위로
+                gsap.to(slide, { duration: 0.3, zIndex: 1000 });
+            });
+        }
+
+        // Draggable 생성
+        const dragInstance = Draggable.create(carousel, {
+            type: "x",
+            inertia: true,
+            onDrag: updateCenter,
+            onThrowUpdate: updateCenter,
+            onRelease: checkLoop
+        })[0];
+
+        // 원형 루프 처리
+        function checkLoop() {
+            if (currentIndex >= slides.length - totalSlides) {
+                currentIndex -= totalSlides;
+                gsap.set(carousel, { x: -slideWidth * currentIndex });
+            } else if (currentIndex < totalSlides) {
+                currentIndex += totalSlides;
+                gsap.set(carousel, { x: -slideWidth * currentIndex });
+            }
+            updateCenter();
+        }
+
+        function goToSlide(index) {
+
+            // 활성화 표시 갱신
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[index].classList.add("active");
+
+            slides.forEach(slide => slide.classList.remove("active"));
+            slides[index].classList.add("active");
+
+            current = index;
+
+            gsap.to(carousel, {
+                x: -slideWidth * current,
+                duration: 1,
+                onUpdate: updateCenter,
+                onComplete: checkLoop
+            });
+
+        }
+
+        // dot 클릭하면 이동
+        dots.forEach((dot, idx) => {
+            dot.addEventListener("click", () => goToSlide(idx));
+        });
+
+        // 자동 슬라이드
+        function autoSlide() {
+            currentIndex++;
+
+            gsap.to(carousel, {
+                x: -slideWidth * currentIndex,
+                duration: 1,
+                onUpdate: updateCenter,
+                onComplete: checkLoop
+            });
+
+            const realIndex = currentIndex % totalSlides;
+
+
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[realIndex].classList.add("active");
+
+            slides.forEach(slide => slide.classList.remove("active"));
+            slides[currentIndex].classList.add("active");
+        }
+
+        setInterval(autoSlide, 3000);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from(".popular-section", {
+            x: -200,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".popular-section",
+                start: "top 80%",
+                end: "bottom+=500 center",
+                toggleActions: "play none reverse none"
+            }
+        });
+
+        gsap.from(".recent-section", {
+            x: 200,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".recent-section",
+                start: "top 80%",
+                end: "bottom+=500 center",
+                toggleActions: "play none reverse none"
+            }
+        });
+
+        let medal =  gsap.timeline();
+        medal.from("#medal-section-1 .medal1" ,{y: -100, autoAlpha: 0 })
+                .from("#medal-section-1 .medal2" ,{y: -100, autoAlpha: 0 })
+                .from("#medal-section-1 .medal3" ,{y: -100, autoAlpha: 0 })
+                .from("#medal-section-2 .medal1" ,{y: -100, autoAlpha: 0 })
+                .from("#medal-section-2 .medal2" ,{y: -100, autoAlpha: 0 })
+                .from("#medal-section-2 .medal3" ,{y: -100, autoAlpha: 0 })
+
+        ScrollTrigger.create({
+
+            animation:medal,
+            trigger: ".hr-text-wrapper",
+            start: "top top",
+            end: "+=500",
+            scrub: 2,
+            anticipatePin:1
+        })
+
+
+
+    </script>
+</body>
+
+</html>

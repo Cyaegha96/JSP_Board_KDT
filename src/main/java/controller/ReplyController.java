@@ -15,16 +15,17 @@ import dao.ReplyDAO;
  */
 @WebServlet("*.reply")
 public class ReplyController extends HttpServlet {
-	
+
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String cmd = uri.substring(contextPath.length());
-		
-		
+
+
 		ReplyDAO replyDao = ReplyDAO.getInstance();
-		
+
 		try {
 			if(cmd.equals("/insert.reply")) {
 				String writer= request.getParameter("writer");
@@ -39,7 +40,7 @@ public class ReplyController extends HttpServlet {
 				System.out.println("댓글 삭제 시도");
 				String seq = request.getParameter("seq");
 				String parent_seq = request.getParameter("parent_seq");
-				
+
 				System.out.println("넘겨진 댓글 정보"+ seq +" "+ parent_seq);
 				if(replyDao.deleteReply(seq) > 0) {
 					System.out.println("db에 댓글 삭제 성공");
@@ -47,14 +48,14 @@ public class ReplyController extends HttpServlet {
 				}else {
 					response.sendRedirect("/error.jsp");
 				}
-				
+
 			}else if(cmd.equals("/update.reply")) {
 				System.out.println("댓글 수정 시도");
 				String seq = request.getParameter("seq");
 				String parent_seq = request.getParameter("parent_seq");
 				String comment=  request.getParameter("comment");
 				String id = (String) request.getSession().getAttribute("loginId");
-				
+
 				System.out.println("댓글 수정 시도"+seq + comment+id);
 				if(replyDao.updateReply(seq,id, comment) > 0) {
 					System.out.println("db에 댓글 수정 성공");
@@ -62,16 +63,17 @@ public class ReplyController extends HttpServlet {
 				}else {
 					response.sendRedirect("/error.jsp");
 				}
-				
+
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/error.jsp");
-			
+
 		}
-		
+
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

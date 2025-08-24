@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 
 public class MemberDTO {
-	
+
 	private String id;
 	private String pw;
 	private String name;
@@ -63,8 +63,8 @@ public class MemberDTO {
 	public void setAddressDetail(String addressDetail) {
 		this.addressDetail = addressDetail;
 	}
-	
-	
+
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -72,7 +72,7 @@ public class MemberDTO {
 		this.createdAt = localDateTime;
 	}
 	public MemberDTO() {
-		
+
 	}
 	public MemberDTO(String id, String pw, String name, String phoneNumber, String email, String zonecode,
 			String address, String addressDetail) {
@@ -100,9 +100,9 @@ public class MemberDTO {
 		this.addressDetail = addressDetail;
 		this.createdAt = createdAt;
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

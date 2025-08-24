@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,20 +18,23 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="card border-primary mt-1  d-flex justify-content-center">
-<div class="card-title">
+	<div class="card border-primary mt-1  d-flex justify-content-center">
+		<div class="card-title">
 
-	<h5>정말로 회원 탈퇴 하시겠습니까?</h5>
-</div>
-<div class="card-body">
-<div>
-<p>지금까지 열심히 만들었던 계정, 당신의 개인정보 전부다 저희가 홀랑먹고 당신의 접근권한만 사라질수도 있습니다. 그래도 괜찮겠습니까?</p></div>
-<div class="m-auto d-flex justify-content-center mt-3">
+			<h5>정말로 회원 탈퇴 하시겠습니까?</h5>
+		</div>
+		<div class="card-body">
+			<div>
+				<p>지금까지 열심히 만들었던 계정, 당신의 개인정보 전부다 저희가 홀랑먹고 당신의 접근권한만 사라질수도 있습니다.
+					그래도 괜찮겠습니까?</p>
+			</div>
+			<div class="m-auto d-flex justify-content-center mt-3">
 
-						<button id="okBtn" type="button" class="btn btn-primary usableBtn">네</button>
-						<button id="cancleBtn" type="button" class="btn btn-primary usableBtn">아니요</button>
-					</div>
-					<script >
+				<button id="okBtn" type="button" class="btn btn-primary usableBtn">네</button>
+				<button id="cancleBtn" type="button"
+					class="btn btn-primary usableBtn">아니요</button>
+			</div>
+			<script>
 					
 						
 						$('#okBtn').click(function(){
@@ -47,7 +50,7 @@
 					
 					</script>
 
-</div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

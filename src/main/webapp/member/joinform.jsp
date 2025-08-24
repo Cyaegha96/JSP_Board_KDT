@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,27 +35,28 @@
 			class="card-body needs-validation" method="post" novalidate>
 			<div class="row g-3 m-2">
 				<label for="inputId"
-					class="col-sm-2 col-form-label text-start text-sm-end">ID</label>
-				<div class="col-sm-4">
+					class="col-3 col-md-2 col-form-label text-start text-sm-end">ID</label>
+				<div class="col-5 col-md-4">
 					<input type="text" class="form-control" id="inputId" name="id"
 						placeholder="아이디를 입력하세요" required title="이 필드는 필수입니다.">
 					<div class="invalid-feedback">Please choose a ID.</div>
 
 				</div>
-				<div class="col-sm-3">
+				<div class="col-4 col-md-3">
 					<button id="IdDupliCheck" type="button"
 						class="btn btn-primary col-form-btn">중복확인</button>
 				</div>
+				<div class="idField col-12 col-md-3 text-center"></div>
 			</div>
 			<div class="row g-3 m-2">
 				<label for="inputPW"
-					class="col-sm-2 col-form-label text-start text-sm-end">PW</label>
-				<div class="col-sm-6">
+					class="col-3 col-md-2 col-form-label text-start text-sm-end">PW</label>
+				<div class="col-6 col-md-6">
 					<input type="password" class="form-control" id="inputPW" name="pw"
 						placeholder="비밀번호를 입력하세요" required title="이 필드는 필수 입니다.">
 
 				</div>
-
+				<div class="pwField col-12 col-md-3 text-center"></div>
 			</div>
 			<div class="row g-3 m-2">
 				<label for="inputPWCorrect"
@@ -158,9 +159,10 @@
 			$('#inputId').css({
 				"border" : "2px solid red"
 			})
+			$(".idField").text("아이디 중복체크를 반드시 해주세요").css("color","red")
 
 		})
-
+		
 		$("#zoneCodeAPIBtn").on("click", function() {
 
 			new daum.Postcode({
@@ -186,15 +188,41 @@
 
 						});
 
-		$("#IdDupliCheck").click(
-				function() {
-					//아이디 체크를 담당하는 팝업창을 띄우기
-					//window.open("url값", "", "옵션")
-					//넘겨보내는 서블릿 주소에 파라미터로서 id에 값을 넘겨주면 됨.
+		$("#IdDupliCheck").click(function() {
+			//아이디 체크를 담당하는 팝업창을 띄우기
+			//window.open("url값", "", "옵션")
+			//넘겨보내는 서블릿 주소에 파라미터로서 id에 값을 넘겨주면 됨.
 
-					window.open("/idcheck.member?id=" + $('#inputId').val(),
-							"", "width=350, height=200")
-				});
+			//window.open("/idcheck.member?id=" + $('#inputId').val(),
+			//		"", "width=350, height=200")
+
+			//팝업창 대신 바로 중복체크 가능
+			
+			let regex = /^[a-z0-9_]{4,12}$/;
+			if (!regex.test($('#inputId').val())) {
+				$(".idField").text("아이디는 4~12문자길이로 만들어주세요").css("color","red")
+				return;
+			}
+
+			console.log("중복체크 클릭")
+			$.ajax({
+				url : "/idcheck.member",
+				data : {
+					id : $("#inputId").val()
+				}
+			}).done(function(resp) {
+
+				console.log(resp);
+				if (resp === "yes") {
+					console.log("아이디중복");
+					$(".idField").text("이 아이디는 중복입니다").css("color","red")
+				} else {
+					console.log("아이디 사용가능")
+					setDuplicateCheckTrue();
+					$(".idField").text("이 아이디는 사용가능합니다.").css("color","green")
+				}
+			});
+		});
 
 		$("#joinForm").on("submit", function() {
 
