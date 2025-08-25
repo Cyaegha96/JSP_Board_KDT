@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,7 +19,7 @@ import dto.ReplyDTO;
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
 
-	@Override
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
@@ -28,12 +27,10 @@ public class BoardController extends HttpServlet {
 		String contextPath = request.getContextPath();
 		String cmd = uri.substring(contextPath.length());
 
-
 		BoardDAO boardDao = BoardDAO.getInstance();
 
+
 		ReplyDAO replyDao = ReplyDAO.getInstance();
-
-
 
 		request.setCharacterEncoding("UTF-8");
 
@@ -82,6 +79,7 @@ public class BoardController extends HttpServlet {
 				System.out.println("게시물 상세보기 진입");
 
 				String seqnum = request.getParameter("seqnum");
+
 
 
 				BoardDTO board = boardDao.getDetailBoard(seqnum);

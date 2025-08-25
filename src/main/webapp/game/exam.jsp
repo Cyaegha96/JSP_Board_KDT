@@ -1,28 +1,22 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    pageEncoding="UTF-8"%>
+    	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Phaser3 Clicker Game</title>
-<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-body {
-	margin: 0;
-	background: #222;
-}
-
-canvas {
-	display: block;
-	margin: 0 auto;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>Phaser3 Clicker Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { margin: 0; background: #222; }
+        canvas { display: block; margin: 0 auto; }
+    </style>
 </head>
 <body>
 
-	<script>
+<script>
 let userId = "${loginId}";
 console.log(userId)
 let button1Count = 0;
@@ -123,3 +117,4 @@ new Phaser.Game(config);
 
 </body>
 </html>
+

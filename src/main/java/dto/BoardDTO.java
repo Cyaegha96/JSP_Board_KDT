@@ -21,6 +21,7 @@ public class BoardDTO {
 
 	public BoardDTO(int seq, String writer, String title, String contents, String write_date, int view_count) {
 
+
 		super();
 		this.seq = seq;
 		this.writer = writer;

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class BoardDAO {
 
 	public int insertBoard(BoardDTO dto) throws Exception, Exception {
 
-		
+
 		String sql = "INSERT INTO board (seq, writer, title, contents, write_date, view_count)"
 				+ "VALUES (board_seq.nextval, ?, ?, ?, SYSDATE, default)";
 
@@ -198,7 +199,7 @@ public class BoardDAO {
 
 		}
 	}
-	
+
 //	public String getPageNavi(int currentPage) throws Exception {
 //	//페이지네이션
 //		
@@ -276,7 +277,7 @@ public class BoardDAO {
 //		sb.append("</ul></nav>");
 //		return sb.toString();
 //	}
-	
+
 
 	public String getPageNavi(int currentPage) throws Exception {
 	//페이지네이션
@@ -355,6 +356,7 @@ public class BoardDAO {
 		sb.append("</ul></nav>");
 		return sb.toString();
 	}
+
 
 	public List<BoardDTO> getAllBoard() throws Exception{
 

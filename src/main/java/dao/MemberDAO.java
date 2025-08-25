@@ -55,7 +55,7 @@ public class MemberDAO {
 	}
 
 	public int insertMember(MemberDTO dto) throws Exception {
-		String sql  = "insert into members values(?,?, default ,?,?,?,?,?,?,sysdate)";
+		String sql  = "insert into members values(?,?, ?,?,?,?,?,?,sysdate)";
 
 		try(Connection con =  getConnection();
 				PreparedStatement pstat = con.prepareStatement(sql);

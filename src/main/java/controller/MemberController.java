@@ -12,16 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import dao.MemberDAO;
 import dto.MemberDTO;
 import service.Util;
 
-
-
 @WebServlet("*.member")
 public class MemberController extends HttpServlet {
 
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
@@ -30,6 +33,7 @@ public class MemberController extends HttpServlet {
 		String cmd = uri.substring(contextPath.length());
 
 		MemberDAO dao = MemberDAO.getInstance();
+
 		
 		response.setContentType("text/html; charset=UTF-8");
 		
@@ -58,6 +62,7 @@ public class MemberController extends HttpServlet {
 			}else if(cmd.equals("/mypage.member")) {
 
 
+
 //				MemberDTO dto =  dao.searchMemberinfoById(id);
 //
 //				request.setAttribute("dto", dto);
@@ -69,15 +74,20 @@ public class MemberController extends HttpServlet {
 				request.getRequestDispatcher("/member/myPage.jsp").forward(request, response);
 			
 			}else if(cmd.equals("/mypageInfo.member")) {
-				String id = (String) request.getSession().getAttribute("loginId");
-				MemberDTO dto =  dao.searchMemberinfoById(id);
-				
+			String id = (String) request.getSession().getAttribute("loginId");
+		
+			MemberDTO dto =  dao.searchMemberinfoById(id);
+		
+						
 				PrintWriter pw = response.getWriter();
 				String result = g.toJson(dto);
 				pw.append(result);
 				
 				
-			}else if(cmd.equals("/logout.member")) {
+			}
+
+			else if(cmd.equals("/logout.member")) {
+
 				System.out.println("로그아웃");
 
 				request.getSession().invalidate();
@@ -120,6 +130,7 @@ public class MemberController extends HttpServlet {
 						  addressDetail);
 				dao.updateMember(dto);
 
+
 				response.sendRedirect("/mypage.member");
 
 			}else if(cmd.equals("/join.member")) {
@@ -138,20 +149,10 @@ public class MemberController extends HttpServlet {
 
 				boolean isIdExist = dao.idCheck(id);
 				//boolean isIdExist = false;
-//				request.setAttribute("isIdExist", isIdExist);
-//				request.setAttribute("id", id);
-//				request.getRequestDispatcher("/member/idcheck.jsp").forward(request, response);
 
-				PrintWriter pw = response.getWriter();
-				response.setContentType("text/html; charset=UTF-8");
-				if(isIdExist) {
-					pw.append("yes");
-				}else {
-					pw.append("no");
-				}
-
-
-
+				request.setAttribute("isIdExist", isIdExist);
+				request.setAttribute("id", id);
+				request.getRequestDispatcher("/member/idcheck.jsp").forward(request, response);
 
 			}else if(cmd.equals("/insert.member")) {
 
